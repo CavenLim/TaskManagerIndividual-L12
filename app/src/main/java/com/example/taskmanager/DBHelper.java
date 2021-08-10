@@ -31,14 +31,14 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(createNoteTableSql);
         Log.i("info", "created tables");
 
-        for (int i = 0; i< 4; i++) {
-            ContentValues values = new ContentValues();
-            values.put(COLUMN_ID,i);
-            values.put(COLUMN_TASK_TITLE, "TEST Tasks " + i);
-            values.put(COLUMN_TASK_DESC, "TEST DESC " + i);
-            db.insert(TABLE_Task, null, values);
-        }
-        Log.i("info", "dummy records inserted");
+//        for (int i = 0; i< 4; i++) {
+//            ContentValues values = new ContentValues();
+//            values.put(COLUMN_ID,i);
+//            values.put(COLUMN_TASK_TITLE, "TEST Tasks " + i);
+//            values.put(COLUMN_TASK_DESC, "TEST DESC " + i);
+//            db.insert(TABLE_Task, null, values);
+//        }
+//        Log.i("info", "dummy records inserted");
     }
 
     @Override
@@ -86,6 +86,37 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
         return tasks;
     }
+
+    public int updateTask(Task data){
+
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_TASK_TITLE, data.getTask());
+        values.put(COLUMN_TASK_DESC, data.getDescription());
+
+        String condition = COLUMN_ID + "= ?";
+
+        String[] args = {String.valueOf(data.getId())};
+
+        int result = db.update(TABLE_Task, values, condition, args);
+
+        db.close();
+
+        return result;
+    }
+    public int deleteTask(int id){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String condition = COLUMN_ID + "= ?";
+        String[] args = {String.valueOf(id)};
+        int result = db.delete(TABLE_Task,condition,args);
+        db.close();
+        return result;
+    }
+
+
 
 
 }

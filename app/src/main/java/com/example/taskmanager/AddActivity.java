@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddActivity extends AppCompatActivity {
@@ -55,7 +56,9 @@ public class AddActivity extends AppCompatActivity {
                 if (!etTask.getText().toString().isEmpty() && !etDesc.getText().toString().isEmpty() && !etTime.getText().toString().isEmpty()){
                     String taskTitle = etTask.getText().toString();
                     String taskDesc = etDesc.getText().toString();
+                    ArrayList<Task> al  = new ArrayList<>();
                     DBHelper dbh = new DBHelper(AddActivity.this);
+                    al.addAll(dbh.getAllTasks());
                     long inserted_id = dbh.insertTask(taskTitle,taskDesc);
                     dbh.close();
 
@@ -63,6 +66,8 @@ public class AddActivity extends AppCompatActivity {
                         Toast.makeText(AddActivity.this, "Insert successful",
                                 Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(AddActivity.this,MainActivity.class);
+
+
                         setResult(RESULT_OK, intent);
 
 
@@ -70,6 +75,9 @@ public class AddActivity extends AppCompatActivity {
                         cal.add(Calendar.SECOND,Integer.parseInt(etTime.getText().toString()));
 
                         Intent intent2 = new Intent(AddActivity.this,NotificationReceiver.class);
+                        intent2.putExtra("taskId",al.get(al.size()-1).getId());
+                        intent2.putExtra("taskName",etTask.getText().toString());
+                        intent2.putExtra("taskDesc",etDesc.getText().toString());
 
                         PendingIntent pendingIntent =  PendingIntent.getBroadcast(AddActivity.this,requestCode,intent2,PendingIntent.FLAG_CANCEL_CURRENT);
 
