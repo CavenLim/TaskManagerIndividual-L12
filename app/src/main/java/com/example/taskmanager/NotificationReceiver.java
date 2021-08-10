@@ -78,7 +78,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         RemoteInput ri = new RemoteInput.Builder("status")
                 .setLabel("Status report")
-                .setChoices(new String [] {"Done", "Not yet","Completed"})
+                .setChoices(new String [] {"Completed"})
                 .build();
 
         NotificationCompat.Action action2 = new

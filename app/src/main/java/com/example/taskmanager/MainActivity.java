@@ -2,7 +2,9 @@ package com.example.taskmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationManager;
 import android.app.RemoteInput;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -83,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
                 al.addAll(dbh2.getAllTasks());
                 dbh2.close();
                 aa.notifyDataSetChanged();
+                NotificationManager manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                manager.cancelAll();
 
                 Toast.makeText(MainActivity.this, "You have Completed a task: "+deletedTskName ,
                         Toast.LENGTH_SHORT).show();
